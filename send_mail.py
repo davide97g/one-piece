@@ -1,8 +1,5 @@
 import smtplib
-
 import config
-
-my_email = "ghiotto.davidenko@gmail.com"
 
 
 def send_email(subject, msg):
@@ -15,6 +12,6 @@ def send_email(subject, msg):
         server.sendmail(config.EMAIL_ADDRESS,
                         config.DESTINATION_EMAIL_ADDRESS, message, )
         server.quit()
-        print("Hey new One Piece chapters are out!")
+        print("Email sent successfully!")
     except:
         print("Email failed to send.")
