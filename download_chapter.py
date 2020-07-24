@@ -6,6 +6,8 @@ from time import sleep
 import config
 import urllib.request
 import os
+import zipfile
+from send_mail import send_mail_with_attachment
 
 
 def download(url, chapter_number, class_name, folder):
@@ -26,7 +28,7 @@ def download(url, chapter_number, class_name, folder):
                 src = img.get_attribute('src')
                 # download the image
                 urllib.request.urlretrieve(
-                    src, folder+'page_'+str(page_counter)+".jpg")
+                    src, folder+'/page_'+str(page_counter)+".jpg")
                 page_counter += 1
     except Exception as err:
         print(err)
@@ -38,20 +40,19 @@ def download(url, chapter_number, class_name, folder):
 def get_chapters(url):
     try:
         chapters_folder = os.getcwd() + "/chapters"
-        if os.path.isdir(chapters_folder):
-            print("Directory already exists.")
-        else:
+        if not os.path.isdir(chapters_folder):
             os.mkdir(chapters_folder)
     except OSError:
         print("Directory creation failed.")
     finally:
+        # ------------------------------------------------------------- need to get these with scraping and keep track of the past, already downloaded chapters
         chapter_list = ["983", "984", "985"]
         # constants
         class_name = "separator"
         folder = "chapters/"
         # loop over all chapters
         for chapter_number in chapter_list:
-            new_chapter_folder = os.getcwd() + "/"+folder+chapter_number+"/"
+            new_chapter_folder = os.getcwd() + "/"+folder+chapter_number
             if os.path.isdir(new_chapter_folder):
                 print("Chapter " + chapter_number+" already downloaded")
             else:
@@ -59,9 +60,32 @@ def get_chapters(url):
                 chapter_url = "https://w16.read-onepiece.com/manga/one-piece-chapter-"+chapter_number+"/"
                 download(chapter_url, chapter_number,
                          class_name, new_chapter_folder)
-                print(chapter_number+" downloaded")
-        print("--- Download completed")
+                print("Chapter "+chapter_number+" downloaded")
+                # zip files
+                zipf = zipfile.ZipFile(
+                    new_chapter_folder+'.zip', 'w', zipfile.ZIP_DEFLATED)
+                zipdir(folder, chapter_number, zipf)
+                zipf.close()
+                print("Zip created")
+                # send email
+                send_mail_with_attachment(chapter_number)
+                print("Email sent")
+
+
+def zipdir(path, folder, ziph):
+    # save current cwd
+    cwd = os.getcwd()
+    # ziph is zipfile handle
+    os.chdir(path)
+    for root, dirs, files in os.walk(folder):
+        for file in files:
+            ziph.write(os.path.join(root, file))
+    # reset dir
+    os.chdir(cwd)
 
 
 url = "https://w16.read-onepiece.com/manga/one-piece-chapter-"
 get_chapters(url)
+
+print("\n#################\n")
+print("Finished")
