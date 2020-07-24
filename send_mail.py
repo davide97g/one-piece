@@ -59,6 +59,3 @@ def send_mail_with_attachment(chapter_number):
 
     # send the message via the server.
     server.sendmail(msg['From'], msg['To'], msg.as_string())
-
-
-send_mail_with_attachment(983)
