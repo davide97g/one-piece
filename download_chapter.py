@@ -8,6 +8,7 @@ import urllib.request
 import os
 import zipfile
 from send_mail import send_mail_with_attachment
+from get_chapters import get_chapter_list
 
 
 def download(url, chapter_number, class_name, folder):
@@ -37,7 +38,7 @@ def download(url, chapter_number, class_name, folder):
         driver.quit()
 
 
-def get_chapters(url):
+def get_chapters(url, chapter_list, send_mail):
     try:
         chapters_folder = os.getcwd() + "/chapters"
         if not os.path.isdir(chapters_folder):
@@ -45,8 +46,6 @@ def get_chapters(url):
     except OSError:
         print("Directory creation failed.")
     finally:
-        # ------------------------------------------------------------- need to get these with scraping and keep track of the past, already downloaded chapters
-        chapter_list = ["983", "984", "985"]
         # constants
         class_name = "separator"
         folder = "chapters/"
@@ -68,8 +67,9 @@ def get_chapters(url):
                 zipf.close()
                 print("Zip created")
                 # send email
-                send_mail_with_attachment(chapter_number)
-                print("Email sent")
+                if send_mail:
+                    send_mail_with_attachment(chapter_number)
+                    print("Email sent")
 
 
 def zipdir(path, folder, ziph):
@@ -84,8 +84,10 @@ def zipdir(path, folder, ziph):
     os.chdir(cwd)
 
 
-url = "https://w16.read-onepiece.com/manga/one-piece-chapter-"
-get_chapters(url)
+url_chapter_prefix = "https://w16.read-onepiece.com/manga/one-piece-chapter-"
+url_chapters = "https://w16.read-onepiece.com/"
+chapter_list = get_chapter_list(url_chapters)
+get_chapters(url_chapter_prefix, chapter_list, False)
 
 print("\n#################\n")
 print("Finished")
