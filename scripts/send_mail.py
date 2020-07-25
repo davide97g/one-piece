@@ -1,5 +1,6 @@
 import smtplib
 import config
+import os
 from os.path import basename
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
@@ -9,15 +10,17 @@ from email.mime.base import MIMEBase
 from email.utils import COMMASPACE, formatdate
 from email import encoders
 
+EMAIL_ADDRESS = os.environ.get("EMAIL")
+PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
 def send_email(subject, msg):
     try:
         server = smtplib.SMTP('smtp.gmail.com:587')
         server.ehlo()
         server.starttls()
-        server.login(config.EMAIL_ADDRESS, config.PASSWORD)
+        server.login(EMAIL_ADDRESS, PASSWORD)
         message = 'Subject: {}\n\n{}'.format(subject, msg)
-        server.sendmail(config.EMAIL_ADDRESS,
+        server.sendmail(EMAIL_ADDRESS,
                         config.DESTINATION_EMAIL_ADDRESS, message, )
         server.quit()
         print("Email sent successfully!")
@@ -32,8 +35,8 @@ def send_mail_with_attachment(chapter_number):
     msg = MIMEMultipart()
 
     # setup the parameters of the message
-    password = config.PASSWORD
-    msg['From'] = config.EMAIL_ADDRESS
+    password = PASSWORD
+    msg['From'] = EMAIL_ADDRESS
     msg['To'] = config.DESTINATION_EMAIL_ADDRESS
     msg['Subject'] = "Chapter "+chapter_number+" is out!"
 
