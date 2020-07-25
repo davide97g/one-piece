@@ -100,7 +100,7 @@ def check_new_chapters():
         print("Error")
         driver.quit()
         send_email("One piece Error",
-                   "Hi sir developer, there was an error with your code. Pleae check.")
+                   "Hi sir developer, there was an error with your code. Please check.")
     finally:
         driver.quit()
 
