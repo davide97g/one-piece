@@ -42,3 +42,8 @@ one-piece/
     - LICENSE
     - README.md
 ```
+
+## Problems
+
+The website is trying to stop me from using automated browser tools.
+Every time I try to open `Chrome Developer Tools` or `Selenium` it reloads to `google` home page.
