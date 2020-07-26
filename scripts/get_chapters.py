@@ -2,19 +2,12 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from time import sleep
-import config
-import urllib.request
-import os
-import zipfile
-from send_mail import send_mail_with_attachment
 
 
-def get_chapter_list(url):
-    driver = webdriver.Chrome(config.DRIVER_PATH)
+def get_chapter_list(path, url, id):
+    driver = webdriver.Chrome(path)
     driver.get(url)
     chapter_list = []
-    id = "ceo_latest_comics_widget-3"
     try:
         chapter_container = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(

@@ -1,5 +1,4 @@
 import smtplib
-import config
 import os
 from os.path import basename
 from email.mime.application import MIMEApplication
@@ -12,23 +11,10 @@ from email import encoders
 
 EMAIL_ADDRESS = os.environ.get("EMAIL")
 PASSWORD = os.environ.get("EMAIL_PASSWORD")
-
-def send_email(subject, msg):
-    try:
-        server = smtplib.SMTP('smtp.gmail.com:587')
-        server.ehlo()
-        server.starttls()
-        server.login(EMAIL_ADDRESS, PASSWORD)
-        message = 'Subject: {}\n\n{}'.format(subject, msg)
-        server.sendmail(EMAIL_ADDRESS,
-                        config.DESTINATION_EMAIL_ADDRESS, message, )
-        server.quit()
-        print("Email sent successfully!")
-    except:
-        print("Email failed to send.")
+DESTINATION_EMAIL_ADDRESS = "ghiotto.davidenko@gmail.com"
 
 
-def send_mail_with_attachment(chapter_number):
+def send_mail(chapter_number):
     # cast to string
     chapter_number = str(chapter_number)
     # create message object instance
@@ -37,12 +23,12 @@ def send_mail_with_attachment(chapter_number):
     # setup the parameters of the message
     password = PASSWORD
     msg['From'] = EMAIL_ADDRESS
-    msg['To'] = config.DESTINATION_EMAIL_ADDRESS
+    msg['To'] = DESTINATION_EMAIL_ADDRESS
     msg['Subject'] = "Chapter "+chapter_number+" is out!"
 
     # create the zip MIME
     msgZip = MIMEBase('application', 'zip')
-    fp = open('./chapters/'+chapter_number+'.zip', 'rb')
+    fp = open('../data/chapters/'+chapter_number+'.zip', 'rb')
     msgZip.set_payload(fp.read())
     encoders.encode_base64(msgZip)
     msgZip.add_header('Content-Disposition', 'attachment',

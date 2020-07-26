@@ -1,4 +1,5 @@
 # one-piece
+
 Web scraper to notify when a new one piece chapter is out
 
 ## How it works
@@ -6,9 +7,9 @@ Web scraper to notify when a new one piece chapter is out
 1. Scans the main webpage e get the list of all the available chapters
 1. Compares the list to the previous list saved
 1. For every chapter not in the saved list:
-    - download the images
-    - zip into a folder
-    - send email
+   - download the images
+   - zip into a folder
+   - send email
 
 ## Requirements
 
@@ -24,7 +25,7 @@ Web scraper to notify when a new one piece chapter is out
 
 ## File organization
 
-``` c
+```c
 one-piece/
     - data/
         - chapters.csv
@@ -33,11 +34,10 @@ one-piece/
             - imgs/
             - zips/
     - scripts/
-        - config.py /* store env config variables */
-        - download_chapters.py
-        - get_chapters.py
-        - main.py 
-        - send_mail.py
+        - download_chapters.py /* download single chapter */
+        - get_chapters.py /* get list of available chapters */
+        - main.py /* entry point */
+        - send_mail.py /* send mail with attachment*/
     - .gitignore
     - LICENSE
     - README.md
