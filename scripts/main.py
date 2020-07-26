@@ -55,10 +55,21 @@ def zipdir(path, folder, ziph):
     os.chdir(cwd)
 
 
-# find N-chapter
-url_chapter_prefix = "https://w16.read-onepiece.com/manga/one-piece-chapter-"
-url_chapters = "https://w16.read-onepiece.com/"  # url to find list of chapters
-id = "ceo_latest_comics_widget-3"  # id to find list of chapters
-folder = "/../data/chapters/"  # where to download chapters
-chapter_list = get_chapter_list(DRIVER_PATH, url_chapters, id)
-get_chapters(DRIVER_PATH, url_chapter_prefix, folder, chapter_list, False)
+# almost same website, small difference in structure
+domain1 = "w16.read-onepiece.com"
+domain2 = "one-pieceonline.com"
+useDomainOne = input("Which domain you wanna use?\n1:\'" +
+                     domain1+"\' (1)\n2:\'"+domain2+"\' (2)\n")
+if useDomainOne == "1":
+    # find N-chapter
+    domain = domain1
+    print("Using "+domain)
+    url_chapter_prefix = "https://w16.read-onepiece.com/manga/one-piece-chapter-"
+    url_chapters = "https://w16.read-onepiece.com/"  # url to find list of chapters
+    id = "ceo_latest_comics_widget-3"  # id to find list of chapters
+    folder = "/../data/chapters/"  # where to download chapters
+    chapter_list = get_chapter_list(DRIVER_PATH, url_chapters, id)
+    get_chapters(DRIVER_PATH, url_chapter_prefix, folder, chapter_list, False)
+else:
+    domain = domain2
+    print("Using "+domain)
