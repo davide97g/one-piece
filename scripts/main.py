@@ -8,7 +8,7 @@ from download_chapter import download
 DRIVER_PATH = "C:\\Program Files (x86)\\chromedriver.exe"
 
 
-def get_chapters(path, url, folder, chapter_list, send_mail):
+def get_chapters(path, url, folder, chapter_list, send):
     try:
         chapters_folder = os.getcwd() + folder
         print(chapters_folder)
@@ -38,7 +38,7 @@ def get_chapters(path, url, folder, chapter_list, send_mail):
                 zipf.close()
                 print("- zip created")
                 # send email
-                if send_mail:
+                if send:
                     send_mail(chapter_number)
                     print("- email sent")
 
@@ -67,9 +67,12 @@ if useDomainOne == "1":
     url_chapter_prefix = "https://w16.read-onepiece.com/manga/one-piece-chapter-"
     url_chapters = "https://w16.read-onepiece.com/"  # url to find list of chapters
     id = "ceo_latest_comics_widget-3"  # id to find list of chapters
-    folder = "/../data/chapters/"  # where to download chapters
+    folder = "./../data/chapters/"  # where to download chapters
     chapter_list = get_chapter_list(DRIVER_PATH, url_chapters, id)
-    get_chapters(DRIVER_PATH, url_chapter_prefix, folder, chapter_list, False)
+    if chapter_list:
+        chapter_list = [chapter_list[0]]  # only the last one
+        get_chapters(DRIVER_PATH, url_chapter_prefix,
+                     folder, chapter_list, True)
 else:
     domain = domain2
     print("Using "+domain)
