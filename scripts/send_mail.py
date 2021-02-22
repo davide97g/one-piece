@@ -8,9 +8,13 @@ from email.mime.image import MIMEImage
 from email.mime.base import MIMEBase
 from email.utils import COMMASPACE, formatdate
 from email import encoders
+from dotenv import load_dotenv
 
-EMAIL_ADDRESS = os.environ.get("EMAIL")
-PASSWORD = os.environ.get("EMAIL_PASSWORD")
+# load environment variables
+load_dotenv()
+
+EMAIL_ADDRESS = os.environ.get("ADDRESS")
+EMAIL_PASSWORD = os.environ.get("PASSWORD")
 DESTINATION_EMAIL_ADDRESS = "ghiotto.davidenko@gmail.com"
 
 
@@ -21,7 +25,7 @@ def send_mail(chapter_number):
     msg = MIMEMultipart()
 
     # setup the parameters of the message
-    password = PASSWORD
+    password = EMAIL_PASSWORD
     msg['From'] = EMAIL_ADDRESS
     msg['To'] = DESTINATION_EMAIL_ADDRESS
     msg['Subject'] = "Chapter "+chapter_number+" is out!"
@@ -48,3 +52,7 @@ def send_mail(chapter_number):
 
     # send the message via the server.
     server.sendmail(msg['From'], msg['To'], msg.as_string())
+
+
+# if __name__ == "__main__":
+#     send_mail(987)

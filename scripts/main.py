@@ -5,7 +5,7 @@ from send_mail import send_mail
 from get_chapters import get_chapter_list
 from download_chapter import download
 
-DRIVER_PATH = "C:\\Program Files (x86)\\chromedriver.exe"
+DRIVER_PATH = "..\\driver\\chromedriver.exe"
 
 
 def get_chapters(path, url, folder, chapter_list, send):
@@ -56,7 +56,7 @@ def zipdir(path, folder, ziph):
 
 
 # almost same website, small difference in structure
-domain1 = "w16.read-onepiece.com"
+domain1 = "read-onepiece.com"
 domain2 = "one-pieceonline.com"
 useDomainOne = input("Which domain you wanna use?\n1:\'" +
                      domain1+"\' (1)\n2:\'"+domain2+"\' (2)\n")
@@ -64,8 +64,8 @@ if useDomainOne == "1":
     # find N-chapter
     domain = domain1
     print("Using "+domain)
-    url_chapter_prefix = "https://w16.read-onepiece.com/manga/one-piece-chapter-"
-    url_chapters = "https://w16.read-onepiece.com/"  # url to find list of chapters
+    url_chapter_prefix = "https://read-onepiece.com/manga/one-piece-chapter-"
+    url_chapters = "https://read-onepiece.com/"  # url to find list of chapters
     id = "ceo_latest_comics_widget-3"  # id to find list of chapters
     folder = "./../data/chapters/"  # where to download chapters
     chapter_list = get_chapter_list(DRIVER_PATH, url_chapters, id)
